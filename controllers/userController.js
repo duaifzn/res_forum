@@ -32,8 +32,12 @@ const userController = {
       })
 
   },
-  signIn: (req, res) => {
+  signInPage: (req, res) => {
     return res.render('signin')
+  },
+  signIn: (req, res) => {
+    req.flash('success_messages', '登入成功')
+    return res.redirect('/restaurant')
   }
 
 }
