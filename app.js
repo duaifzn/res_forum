@@ -8,20 +8,28 @@ const flash = require('connect-flash')
 const app = express()
 const port = 3000
 const passport = require('./config/passport')
+
 app.engine("handlebars", exphbs({ defaultLayout: "main" }))
 app.set("view engine", "handlebars")
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }))
-app.use(flash())
-app.use((req, res, next) => {
-  res.locals.success_messages = req.flash('success_messages')
-  res.locals.error_messages = req.flash('error_messages')
-  next()
-})
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
+
+//passport 放置session之後，及req.user使用之前
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash())
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  console.log(req.user)
+  res.locals.success_messages = req.flash('success_messages')
+  res.locals.error_messages = req.flash('error_messages')
+
+  //console.log(req.user)
+  next()
+})
 
 require('./routes')(app, passport)
+
 //start and listen server
 app.listen(port, () => {
   console.log(`http://localhost:${port} is running`)

@@ -13,5 +13,5 @@ module.exports = (app, passport) => {
     failureRedirect: '/signin',
     failureFlash: true
   }), userController.signIn)
-
+  app.get('/logout', userController.logOut)
 }

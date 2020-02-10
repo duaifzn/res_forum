@@ -1,5 +1,5 @@
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
@@ -18,6 +18,7 @@ passport.use(new LocalStrategy({
         //回傳密碼錯誤
         return done(null, false, req.flash('error_messages', '密碼輸入錯誤'))
       }
+
       return done(null, user)
     })
     // User.findOne({ username: username }, function (err, user) {
@@ -39,7 +40,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
   User.findByPk(id).then(user => {
-    return done(null, user)
+    return done(null, user.toJSON())
   });
 });
 
