@@ -14,6 +14,9 @@
   <nav class="navbar navbar-dark bg-dark">
     <span class="navbar-brand mb-0 h1">餐廳評論網</span>
     <div>
+      {{#if user.isAdmin}}
+      <a href="/admin"><span class="navbar-text">Admin後台</span></a>
+      {{/if}}
       {{#if user}}
       <span class="navbar-text">Hi!, {{user.email}}</span>
       <a href="/users/{{user.id}}">Profile</a>

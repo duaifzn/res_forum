@@ -2,12 +2,26 @@ const resController = require('../controllers/resController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
 module.exports = (app, passport) => {
-  app.get('/', (req, res) => { res.redirect('/restaurant') })
-  app.get('/restaurant', resController.getRes)
-  app.get('/admin', (req, res) => { res.redirect('/admin/restaurant') })
-  app.get('/admin/restaurant', adminController.getRes)
-  app.get('/signup', userController.signUpPage)
-  app.post('/signup', userController.signUp)
+  const authenticate = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+    res.redirect('/signin')
+  }
+  const isAdmin = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.isAdmin) {
+        return next()
+      }
+    }
+    res.redirect('/signin')
+  }
+  app.get('/', authenticate, (req, res) => { res.redirect('/restaurant') })
+  app.get('/restaurant', authenticate, resController.getRes)
+  app.get('/admin', isAdmin, (req, res) => { res.redirect('/admin/restaurant') })
+  app.get('/admin/restaurant', isAdmin, adminController.getRes)
+  app.get('/signup', authenticate, userController.signUpPage)
+  app.post('/signup', authenticate, userController.signUp)
   app.get('/signin', userController.signInPage)
   app.post('/signin', passport.authenticate('local', {
     failureRedirect: '/signin',
