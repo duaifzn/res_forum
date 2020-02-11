@@ -11,31 +11,38 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1">餐廳評論網</span>
-    <div>
-      {{#if user.isAdmin}}
-      <a href="/admin"><span class="navbar-text">Admin後台</span></a>
-      {{/if}}
-      {{#if user}}
-      <span class="navbar-text">Hi!, {{user.email}}</span>
-      <a href="/users/{{user.id}}">Profile</a>
-      <a class="btn btn-success" href="/logout">logout</a>
-      {{/if}}
+  <header>
+    <nav class="navbar navbar-dark bg-dark">
+      <span class="navbar-brand mb-0 h1">餐廳評論網</span>
+      <div>
+        {{#if user.isAdmin}}
+        <a href="/admin/restaurant"><span class="navbar-text">Admin後台</span></a>
+        {{/if}}
+        {{#if user}}
+        <span class="navbar-text">Hi!, {{user.email}}</span>
+        <a href="/users/{{user.id}}">Profile</a>
+        <a class="btn btn-success" href="/logout">logout</a>
+        {{/if}}
+      </div>
+    </nav>
+    {{#if error_messages}}
+    <div class="alert alert-danger" role="alert">
+      {{error_messages}}
     </div>
-  </nav>
-  {{#if error_messages}}
-  <div class="alert alert-danger" role="alert">
-    {{error_messages}}
-  </div>
-  {{/if}}
-  {{#if success_messages}}
-  <div class="alert alert-success" role=s"alert">
-    {{success_messages}}
-  </div>
-  {{/if}}
-  {{!-- partial template will replace here --}}
-  {{{body}}}
+    {{/if}}
+    {{#if success_messages}}
+    <div class="alert alert-success" role=s"alert">
+      {{success_messages}}
+    </div>
+    {{/if}}
+  </header>
+
+  <main class="container">
+    {{!-- partial template will replace here --}}
+    {{{body}}}
+  </main>
+
+
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

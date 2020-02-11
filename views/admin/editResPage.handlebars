@@ -1,0 +1,29 @@
+<a class="btn btn-primary" href="/admin/restaurant">back</a>
+<label>
+  <h1>edit restaurant</h1>
+</label>
+<form action="/admin/restaurant/{{restaurant.id}}/edit?_method=PUT" method="POST">
+  <div class="form-group">
+    <label for="name">restaurant name</label>
+    <input type="text" class="form-control" name="name" id="name" value="{{restaurant.name}}">
+  </div>
+  <div class="form-group">
+    <label for="tel">tel</label>
+    <input type="text" class="form-control" name="tel" id="tel" value="{{restaurant.tel}}">
+  </div>
+  <div class="form-group">
+    <label for="address">address</label>
+    <input type="text" class="form-control" name="address" id="address" value="{{restaurant.address}}">
+  </div>
+  <div class="form-group">
+    <label for="opening_hours">opening hours</label>
+    <input type="time" class="form-control" name="opening_hours" id="opening_hours"
+      value="{{restaurant.opening_hours}}">
+  </div>
+  <div class="form-group">
+    <label for="description">description</label>
+    <textarea class="form-control" rows="3" name="description" id="description">{{restaurant.description}}</textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">edit</button>
+</form>

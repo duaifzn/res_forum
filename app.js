@@ -8,12 +8,13 @@ const flash = require('connect-flash')
 const app = express()
 const port = 3000
 const passport = require('./config/passport')
+const methodOverride = require('method-override')
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }))
 app.set("view engine", "handlebars")
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
-
+app.use(methodOverride('_method'))
 //passport 放置session之後，及req.user使用之前
 app.use(passport.initialize());
 app.use(passport.session());
