@@ -1,6 +1,8 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
 const fs = require('fs')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminController = {
   adminGetRes: (req, res) => {
@@ -20,22 +22,22 @@ const adminController = {
     const { file } = req
     console.log(file)
     if (file) {
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log('ERROR:', err)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return Restaurant.create({
-            name: req.body.name,
-            tel: req.body.tel,
-            address: req.body.address,
-            opening_hours: req.body.opening_hours,
-            description: req.body.description,
-            image: file ? `/upload/${file.originalname}` : null
-          }).then(restaurant => {
-            req.flash('success_messages', '新增成功!')
-            return res.redirect('/admin/restaurant')
-          })
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return Restaurant.create({
+          name: req.body.name,
+          tel: req.body.tel,
+          address: req.body.address,
+          opening_hours: req.body.opening_hours,
+          description: req.body.description,
+          image: file ? img.data.link : null
+        }).then(restaurant => {
+          req.flash('success_messages', '新增成功!')
+          return res.redirect('/admin/restaurant')
         })
       })
+
+
     }
     else {
       Restaurant.create({
@@ -44,7 +46,7 @@ const adminController = {
         address: req.body.address,
         opening_hours: req.body.opening_hours,
         description: req.body.description,
-        image: file ? `/upload/${file.originalname}` : null
+        image: file ? img.data.link : null
       }).then(restaurant => {
         req.flash('success_messages', '新增成功!')
         return res.redirect('/admin/restaurant')
@@ -80,24 +82,22 @@ const adminController = {
     const { file } = req
     console.log(file)
     if (file) {
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log('ERROR:', err)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return Restaurant.findByPk(req.params.id)
-            .then(restaurant => {
-              restaurant.update({
-                name: req.body.name,
-                tel: req.body.tel,
-                address: req.body.address,
-                opening_hours: req.body.opening_hours,
-                description: req.body.description,
-                image: file ? `/upload/${file.originalname}` : null
-              }).then(restaurant => {
-                req.flash('success_messages', '修改成功!')
-                return res.redirect('/admin/restaurant')
-              })
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        Restaurant.findByPk(req.params.id)
+          .then(restaurant => {
+            restaurant.update({
+              name: req.body.name,
+              tel: req.body.tel,
+              address: req.body.address,
+              opening_hours: req.body.opening_hours,
+              description: req.body.description,
+              image: file ? img.data.link : null
+            }).then(restaurant => {
+              req.flash('success_messages', '修改成功!')
+              return res.redirect('/admin/restaurant')
             })
-        })
+          })
       })
     }
     else {
@@ -109,7 +109,7 @@ const adminController = {
             address: req.body.address,
             opening_hours: req.body.opening_hours,
             description: req.body.description,
-            image: file ? `/upload/${file.originalname}` : null
+            image: file ? img.data.link : null
           }).then(restaurant => {
             req.flash('success_messages', '修改成功!')
             return res.redirect('/admin/restaurant')
