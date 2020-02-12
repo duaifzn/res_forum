@@ -2,7 +2,7 @@
 <label>
   <h1>edit restaurant</h1>
 </label>
-<form action="/admin/restaurant/{{restaurant.id}}/edit?_method=PUT" method="POST">
+<form action="/admin/restaurant/{{restaurant.id}}/edit?_method=PUT" method="POST" enctype="multipart/form-data">
   <div class="form-group">
     <label for="name">restaurant name</label>
     <input type="text" class="form-control" name="name" id="name" value="{{restaurant.name}}">
@@ -24,6 +24,9 @@
     <label for="description">description</label>
     <textarea class="form-control" rows="3" name="description" id="description">{{restaurant.description}}</textarea>
   </div>
-
+  <div class="form-group">
+    <label for="image">image</label>
+    <input type="file" class="form-control-file" name="image" id="image">
+  </div>
   <button type="submit" class="btn btn-primary">edit</button>
 </form>
