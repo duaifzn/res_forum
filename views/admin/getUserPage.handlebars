@@ -1,0 +1,41 @@
+<a href="/admin/restaurant">admin restuarants</a>
+<span>|</span>
+<a href="/admin/user">admin users</a>
+<div>
+  <h1>admin users</h1>
+</div>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">Admin</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <th scope="row">{{@index}}</th>
+      <td>{{this.email}}</td>
+      {{#if this.isAdmin}}
+      <td>Admin</td>
+      <td>
+        <form action="/admin/user/{{this.id}}?_method=PUT" method="POST">
+          <button type="submit">set as user</button>
+        </form>
+      </td>
+      {{else}}
+      <td>User</td>
+      <td>
+        <form action="/admin/user/{{this.id}}?_method=PUT" method="POST">
+          <button type="submit">set as admin</button>
+        </form>
+      </td>
+      {{/if}}
+
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

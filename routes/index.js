@@ -41,4 +41,8 @@ module.exports = (app, passport) => {
   //修改一筆餐廳
   app.put('/admin/restaurant/:id/edit', authenticate, upload.single('image'), adminController.editRes)
 
+  //使用者頁面
+  app.get('/admin/user', authenticate, adminController.getUser)
+  //修改使用者權限
+  app.put('/admin/user/:id', authenticate, adminController.putUser)
 }
