@@ -127,6 +127,7 @@ const adminController = {
       user.update({
         isAdmin: !user.isAdmin
       }).then(user => {
+        req.flash('success_messages', '權限變更成功')
         return res.redirect('/admin/user')
       })
     })

@@ -5,26 +5,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>餐廳評論網</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
   <header>
-    <nav class="navbar navbar-dark bg-dark">
-      <span class="navbar-brand mb-0 h1">餐廳評論網</span>
-      <div>
-        {{#if user.isAdmin}}
-        <a href="/admin/user"><span class="navbar-text">Admin後台</span></a>
-        {{/if}}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/restaurant">餐廳評論網</a>
+      <div class="collapse navbar-collapse">
+        <div class="navbar-nav">
+          {{#if user.isAdmin}}
+          <a class="nav-item nav-link" href="/admin/restaurant">Admin Restuarants</a>
+          <a class="nav-item nav-link" href="/admin/user">Admin Users</a>
+          {{/if}}
+        </div>
         {{#if user}}
-        <span class="navbar-text">Hi!, {{user.email}}</span>
-        <a href="/users/{{user.id}}">Profile</a>
-        <a class="btn btn-success" href="/logout">logout</a>
+        <div class="ml-auto">
+          <span class="navbar-text">Hi!, {{user.email}}</span>
+          <a href="/users/{{user.id}}">Profile</a>
+          <a class="btn btn-success" href="/logout">logout</a>
+        </div>
         {{/if}}
       </div>
     </nav>
+
     {{#if error_messages}}
     <div class="alert alert-danger" role="alert">
       {{error_messages}}
@@ -37,7 +44,7 @@
     {{/if}}
   </header>
 
-  <main class="container">
+  <main class="container mt-4">
     {{!-- partial template will replace here --}}
     {{{body}}}
   </main>

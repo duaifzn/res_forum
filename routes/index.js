@@ -17,6 +17,7 @@ module.exports = (app, passport) => {
   }
   app.get('/', authenticate, (req, res) => { res.redirect('/restaurant') })
   app.get('/restaurant', authenticate, resController.getRes)
+  app.get('/restaurant/:id', authenticate, resController.getARes)
   app.get('/admin', isAdmin, (req, res) => { res.redirect('/admin/restaurant') })
   app.get('/admin/restaurant', isAdmin, adminController.adminGetRes)
   app.get('/signup', userController.signUpPage)
@@ -29,20 +30,20 @@ module.exports = (app, passport) => {
   app.get('/logout', userController.logOut)
 
   //新增餐廳頁面
-  app.get('/admin/restaurant/create', authenticate, adminController.createResPage)
+  app.get('/admin/restaurant/create', isAdmin, adminController.createResPage)
   //新增一筆餐廳
-  app.post('/admin/restaurant', authenticate, upload.single('image'), adminController.createRes)
+  app.post('/admin/restaurant', isAdmin, upload.single('image'), adminController.createRes)
   //瀏覽一筆餐廳
-  app.get('/admin/restaurant/:id', authenticate, adminController.getRes)
+  app.get('/admin/restaurant/:id', isAdmin, adminController.getRes)
   //刪除一筆餐廳
-  app.delete('/admin/restaurant/:id', authenticate, adminController.deleteRes)
+  app.delete('/admin/restaurant/:id', isAdmin, adminController.deleteRes)
   //修改餐廳頁面
-  app.get('/admin/restaurant/:id/edit', authenticate, adminController.editResPage)
+  app.get('/admin/restaurant/:id/edit', isAdmin, adminController.editResPage)
   //修改一筆餐廳
-  app.put('/admin/restaurant/:id/edit', authenticate, upload.single('image'), adminController.editRes)
+  app.put('/admin/restaurant/:id/edit', isAdmin, upload.single('image'), adminController.editRes)
 
   //使用者頁面
-  app.get('/admin/user', authenticate, adminController.getUser)
+  app.get('/admin/user', isAdmin, adminController.getUser)
   //修改使用者權限
-  app.put('/admin/user/:id', authenticate, adminController.putUser)
+  app.put('/admin/user/:id', isAdmin, adminController.putUser)
 }

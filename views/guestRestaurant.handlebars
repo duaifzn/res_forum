@@ -1,0 +1,22 @@
+<div class="text-center">
+  <a class="btn btn-primary" href="/restaurant">back</a>
+  <label>
+    <h1>餐廳資訊</h1>
+  </label>
+</div>
+
+<div class="row">
+  <div class="card col-5 text-center mx-auto">
+    <img src="{{restaurant.image}}" class="card-img-top" alt="error">
+    <div class="card-body">
+      <h3 class="card-title">{{restaurant.name}}</h3>
+      <div class="card-text mb-4">
+        tel:{{restaurant.tel}}<br>
+        address:{{restaurant.address}}<br>
+        business hours:{{restaurant.opening_hours}}<br>
+        description:{{restaurant.description}}<br>
+      </div>
+
+    </div>
+  </div>
+</div>
