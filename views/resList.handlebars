@@ -1,1 +1,11 @@
-<h1>controller is working</h1>
+<h1> restaurants</h1>
+
+<div class="list-group">
+  {{#each restaurants}}
+  <div class="row">
+    <a href="/admin/restaurant/{{this.id}}" class="list-group-item list-group-item-action col-6">
+      <h5>{{this.name}}</h5>
+    </a>
+  </div>
+  {{/each}}
+</div>

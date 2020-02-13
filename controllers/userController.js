@@ -37,8 +37,8 @@ const userController = {
   },
   signIn: (req, res) => {
     req.flash('success_messages', '登入成功')
-    //console.log(req)
-    return res.redirect('/restaurant')
+    if (req.user.isAdmin) { return res.redirect('/admin/user') }
+    else { return res.redirect('/restaurant') }
   },
   logOut: (req, res) => {
     req.logout()
