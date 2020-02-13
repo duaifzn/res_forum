@@ -1,4 +1,7 @@
-<h1>admin users</h1>
+<label>
+  <h1 class="text-light bg-dark">admin users</h1>
+</label>
+
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -10,7 +13,7 @@
   </thead>
   <tbody>
     {{#each users}}
-    <tr>
+    <tr class="table-light">
       <th scope="row">{{@index}}</th>
       <td>{{this.email}}</td>
       {{#if this.isAdmin}}

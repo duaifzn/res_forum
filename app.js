@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(methodOverride('_method'))
 app.use('/upload', express.static(__dirname + '/upload'))
+app.use(express.static('public'))
 //passport 放置session之後，及req.user使用之前
 app.use(passport.initialize());
 app.use(passport.session());

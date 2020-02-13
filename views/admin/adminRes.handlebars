@@ -1,8 +1,8 @@
 <div>
   <label>
-    <h1>admin restaurants</h1>
+    <h1 class="text-light bg-dark">admin restaurants</h1>
   </label>
-  <a class="btn btn-danger" href="/admin/restaurant/create">新增餐廳</a>
+  <a class="btn btn-danger mb-3" href="/admin/restaurant/create">新增餐廳</a>
 </div>
 
 <div class="list-group">
@@ -11,7 +11,9 @@
     <a href="/admin/restaurant/{{this.id}}" class="list-group-item list-group-item-action col-6">
       <h5>{{this.name}}</h5>
     </a>
-    <a class="col-1" href="/admin/restaurant/{{this.id}}/edit">edit</a>
+    <div class="col-1 ">
+      <a class="btn btn-info" href="/admin/restaurant/{{this.id}}/edit">edit</a>
+    </div>
     <form class="col-1" action="/admin/restaurant/{{this.id}}?_method=DELETE" method="POST">
       <button class="btn btn-danger" type="submit">delete</button>
     </form>
