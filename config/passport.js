@@ -1,8 +1,30 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_ID,
+  clientSecret: process.env.FACEBOOK_SECRET,
+  callbackURL: process.env.FACEBOOK_CALLBACK,
+  profileFields: ['name', 'email']
+},
+  function (accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({
+      where: { email: profile._json.email }, defaults: {
+        name: `${profile._json.last_name} ${profile._json.first_name}`,
+        email: profile._json.email,
+        password: '12345678',
+        isAdmin: false
+      }
+    }).then(user => {
+      return cb(null, user[0])
+    })
+  }
+));
+
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passReqToCallback: true

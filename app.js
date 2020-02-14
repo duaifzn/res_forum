@@ -2,6 +2,9 @@
 const express = require("express")
 const exphbs = require("express-handlebars")
 const db = require('./models')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -9,7 +12,7 @@ const app = express()
 const port = process.env.PORT || 3000
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
-require('dotenv').config()
+
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }))
 app.set("view engine", "handlebars")
@@ -26,8 +29,6 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   res.locals.success_messages = req.flash('success_messages')
   res.locals.error_messages = req.flash('error_messages')
-
-  //console.log(req.user)
   next()
 })
 

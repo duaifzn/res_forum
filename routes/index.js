@@ -46,4 +46,9 @@ module.exports = (app, passport) => {
   app.get('/admin/user', isAdmin, adminController.getUser)
   //修改使用者權限
   app.put('/admin/user/:id', isAdmin, adminController.putUser)
+
+  //fb登入
+  app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
+  app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/signin' }), userController.signIn);
 }
