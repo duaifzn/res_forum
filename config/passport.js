@@ -1,9 +1,30 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_ID,
+  clientSecret: process.env.GOOGLE_SECRET,
+  callbackURL: process.env.GOOGLE_CALLBACK
+},
+  function (accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({
+      where: { email: profile._json.email }, defaults: {
+        name: profile._json.name,
+        email: profile._json.email,
+        password: '12345678',
+        isAdmin: false
+      }
+    }).then(user => {
+      return cb(null, user[0])
+    })
+  }
+));
 
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_ID,

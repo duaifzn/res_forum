@@ -51,4 +51,10 @@ module.exports = (app, passport) => {
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/signin' }), userController.signIn);
+  //google登入
+  app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+  app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/signin' }), userController.signIn);
 }
