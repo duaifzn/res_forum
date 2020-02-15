@@ -1,3 +1,15 @@
+<div id="whiteback" class="whiteback">
+  <div class="dcheck">
+    <h3>確認刪除?</h3>
+    <div class="btn-place">
+      {{!-- <button class="btn btn-danger" type="submit">確認</button> --}}
+      <form class="" action="/admin/restaurant/{{this.id}}?_method=DELETE" method="POST">
+        <button class="btn btn-danger" type="submit">確認</button>
+      </form>
+      <button id="cancel" class="btn btn-success place">取消</button>
+    </div>
+  </div>
+</div>
 <div>
   <label>
     <h1 class="text-light bg-dark">admin restaurants</h1>
@@ -8,15 +20,19 @@
 <div class="list-group">
   {{#each restaurants}}
   <div class="row">
-    <a href="/admin/restaurant/{{this.id}}" class="list-group-item list-group-item-action col-6">
+    <a href="/admin/restaurant/{{this.id}}" class="list-group-item list-group-item-action col-10">
       <h5>{{this.name}}</h5>
     </a>
     <div class="col-1 ">
       <a class="btn btn-info" href="/admin/restaurant/{{this.id}}/edit">edit</a>
     </div>
-    <form class="col-1" action="/admin/restaurant/{{this.id}}?_method=DELETE" method="POST">
+    <div class="col-1 ">
+
+      <a id="delete" class="btn btn-danger" href="{{this.id}}">delete</a>
+    </div>
+    {{!-- <form class="col-1" action="/admin/restaurant/{{this.id}}?_method=DELETE" method="POST">
       <button class="btn btn-danger" type="submit">delete</button>
-    </form>
+    </form> --}}
   </div>
 
   {{/each}}
