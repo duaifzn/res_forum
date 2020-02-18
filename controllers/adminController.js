@@ -1,26 +1,29 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminController = {
   adminGetRes: (req, res) => {
-    Restaurant.findAll().then(restaurants => {
-
+    Restaurant.findAll({ include: [Category] }).then(restaurants => {
       return res.render('admin/adminRes', JSON.parse(JSON.stringify({ restaurants: restaurants })))
     })
   },
   createResPage: (req, res) => {
-    return res.render('admin/createResPage')
+    Category.findAll().then(categories => {
+      return res.render('admin/createResPage', JSON.parse(JSON.stringify({ categories: categories })))
+    })
+
   },
   createRes: (req, res) => {
+    //console.log(req.body)
     if (!req.body.name) {
       req.flash('error_messages', '沒有輸入餐廳名稱')
       return res.redirect('admin/createResPage')
     }
     const { file } = req
-    console.log(file)
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
@@ -30,7 +33,8 @@ const adminController = {
           address: req.body.address,
           opening_hours: req.body.opening_hours,
           description: req.body.description,
-          image: file ? img.data.link : null
+          image: file ? img.data.link : null,
+          CategoryId: req.body.selectCategory
         }).then(restaurant => {
           req.flash('success_messages', '新增成功!')
           return res.redirect('/admin/restaurant')
@@ -46,7 +50,8 @@ const adminController = {
         address: req.body.address,
         opening_hours: req.body.opening_hours,
         description: req.body.description,
-        image: file ? img.data.link : null
+        image: file ? img.data.link : null,
+        CategoryId: req.body.selectCategory
       }).then(restaurant => {
         req.flash('success_messages', '新增成功!')
         return res.redirect('/admin/restaurant')
@@ -57,7 +62,7 @@ const adminController = {
 
   },
   getRes: (req, res) => {
-    Restaurant.findByPk(req.params.id)
+    Restaurant.findByPk(req.params.id, { include: [Category] })
       .then(restaurant => {
         return res.render(`admin/restaurant`, JSON.parse(JSON.stringify({ restaurant: restaurant })))
       })
@@ -73,9 +78,11 @@ const adminController = {
       })
   },
   editResPage: (req, res) => {
-    Restaurant.findByPk(req.params.id)
+    Restaurant.findByPk(req.params.id, { include: [Category] })
       .then(restaurant => {
-        return res.render('admin/editResPage', JSON.parse(JSON.stringify({ restaurant: restaurant })))
+        Category.findAll().then(categories => {
+          return res.render('admin/editResPage', JSON.parse(JSON.stringify({ restaurant: restaurant, categories: categories })))
+        })
       })
   },
   editRes: (req, res) => {
@@ -92,7 +99,8 @@ const adminController = {
               address: req.body.address,
               opening_hours: req.body.opening_hours,
               description: req.body.description,
-              image: file ? img.data.link : null
+              image: file ? img.data.link : null,
+              CategoryId: req.body.selectCategory
             }).then(restaurant => {
               req.flash('success_messages', '修改成功!')
               return res.redirect('/admin/restaurant')
@@ -109,7 +117,8 @@ const adminController = {
             address: req.body.address,
             opening_hours: req.body.opening_hours,
             description: req.body.description,
-            image: file ? img.data.link : null
+            image: file ? img.data.link : null,
+            CategoryId: req.body.selectCategory
           }).then(restaurant => {
             req.flash('success_messages', '修改成功!')
             return res.redirect('/admin/restaurant')

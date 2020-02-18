@@ -22,18 +22,33 @@
   <div class="row">
     <a href="/admin/restaurant/{{this.id}}" class="list-group-item list-group-item-action col-10">
       <h5>{{this.name}}</h5>
+      <h4>{{this.Category.name}}</h4>
     </a>
     <div class="col-1 ">
       <a class="btn btn-info" href="/admin/restaurant/{{this.id}}/edit">edit</a>
     </div>
     <div class="col-1 ">
-
       <a id="delete" class="btn btn-danger" href="{{this.id}}">delete</a>
     </div>
-    {{!-- <form class="col-1" action="/admin/restaurant/{{this.id}}?_method=DELETE" method="POST">
-      <button class="btn btn-danger" type="submit">delete</button>
-    </form> --}}
+
   </div>
 
   {{/each}}
+  {{!-- <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav> --}}
 </div>

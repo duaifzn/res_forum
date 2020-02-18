@@ -74,7 +74,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
   User.findByPk(id).then(user => {
-    return done(null, user.toJSON())
+    return done(null, user.get())
   });
 });
 
