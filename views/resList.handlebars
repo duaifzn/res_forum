@@ -2,12 +2,51 @@
   <h1 class="text-light bg-dark"> restaurants</h1>
 </label>
 
-<div class="list-group">
+<nav class="nav nav-pills bg-light rounded-lg">
+  <li class="nav-item">
+    <a class="nav-link {{#ifCond '' categoryId}}active{{/ifCond}}" href="?categoryId=">全部</a>
+  </li>
+  {{#each categories}}
+  <li class="nav-item">
+    <a class="nav-link {{#ifCond this.id ../categoryId}}active{{/ifCond}}"
+      href="?categoryId={{this.id}}">{{this.name}}</a>
+  </li>
+
+  {{/each}}
+</nav>
+<div class="card-group row">
   {{#each restaurants}}
-  <div class="row">
-    <a href="/restaurant/{{this.id}}" class="list-group-item list-group-item-action col-6">
-      <h5>{{this.name}}</h5>
+  <div class="col-4">
+    <a href="/restaurant/{{this.id}}" class="">
+      <div class="card m-1" style="height: 400px ;width:350px;">
+        <div class="card-body">
+          <img src="{{this.image}}" alt="error" class="card-img-top">
+          <h3 class="card-title">{{this.name}}</h3>
+
+          <span class="badge badge-secondary">{{this.Category.name}}</span>
+          <p class="card-text">{{this.description}}</p>
+        </div>
+      </div>
     </a>
   </div>
   {{/each}}
 </div>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="?page={{prev}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {{#each totalPage}}
+    <li class="page-item {{#ifCond this ../page}}active{{/ifCond}}"><a class="page-link"
+        href="?page={{this}}">{{this}}</a></li>
+    {{/each}}
+    <li class="page-item">
+      <a class="page-link" href="?page={{next}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

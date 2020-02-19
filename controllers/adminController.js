@@ -140,6 +140,61 @@ const adminController = {
         return res.redirect('/admin/user')
       })
     })
+  },
+
+  getAllCategory: (req, res) => {
+    Category.findAll().then(categories => {
+      return res.render('admin/getAllCategory', JSON.parse(JSON.stringify({ categories: categories })))
+    })
+  },
+  createCategory: (req, res) => {
+    if (!req.body.newCategory) {
+      req.flash("error_messages", "沒有輸入類別")
+      return res.redirect('/admin/category')
+    }
+    else {
+      Category.create({
+        name: req.body.newCategory
+      }).then(() => {
+        req.flash("success_messages", "新增成功")
+        return res.redirect('/admin/category')
+      })
+    }
+
+
+  },
+  editCategoryPage: (req, res) => {
+    Category.findAll().then(categories => {
+      Category.findByPk(req.params.id)
+        .then(category => {
+          return res.render('admin/getAllCategory', JSON.parse(JSON.stringify({ categories: categories, category: category })))
+        })
+    })
+
+
+  },
+  editCategory: (req, res) => {
+    Category.findByPk(req.params.id)
+      .then(category => {
+        category.update({
+          name: req.body.editCategory
+        }).then(() => {
+          req.flash("success_messages", "修改成功")
+          res.redirect('/admin/category')
+        })
+      })
+
+
+  },
+  deleteCategory: (req, res) => {
+    Category.findByPk(req.params.id)
+      .then(category => {
+        category.destroy().then(() => {
+          req.flash("success_messages", "刪除成功")
+          return res.redirect('/admin/category')
+        })
+
+      })
   }
 
 }

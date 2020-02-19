@@ -47,6 +47,17 @@ module.exports = (app, passport) => {
   //修改使用者權限
   app.put('/admin/user/:id', isAdmin, adminController.putUser)
 
+  //所有餐廳類別頁面
+  app.get('/admin/category', isAdmin, adminController.getAllCategory)
+  //新增餐廳類別
+  app.post('/admin/category/create', isAdmin, adminController.createCategory)
+  //修改餐廳類別頁面
+  app.get('/admin/category/:id/edit', isAdmin, adminController.editCategoryPage)
+  //修改餐廳類別
+  app.put('/admin/category/:id/edit', isAdmin, adminController.editCategory)
+  //刪除餐廳類別
+  app.delete('/admin/category/:id/delete', isAdmin, adminController.deleteCategory)
+
   //fb登入
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
   app.get('/auth/facebook/callback',

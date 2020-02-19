@@ -1,0 +1,44 @@
+<h1>Category</h1>
+{{#if category}}
+<form action="/admin/category/{{category.id}}/edit?_method=PUT" class="form-inline" method="POST">
+  <div class="form-group">
+    <input type="text" class="form-control" id="editCategory" name="editCategory" value="{{category.name}}">
+  </div>
+  <button type="submit" class="btn btn-primary">修改</button>
+  <span class="mx-2 text-white"> OR </span>
+  <a class="btn btn-primary" href="/admin/category">新增類別</a>
+</form>
+{{else}}
+<form action="/admin/category/create" class="form-inline" method="POST">
+  <div class="form-group">
+    <input type="text" class="form-control" id="newCategory" name="newCategory" placeholder="輸入新增的類別">
+  </div>
+  <button type="submit" class="btn btn-primary">新增</button>
+</form>
+{{/if}}
+
+<div class="categoryList">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">category name</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody class="table-light">
+      {{#each categories}}
+      <tr>
+        <th scope="row">{{@index}}</th>
+        <td>{{this.name}}</td>
+        <td>
+          <a href="/admin/category/{{this.id}}/edit">edit</a>
+          <form action="/admin/category/{{this.id}}/delete?_method=DELETE" method="POST">
+            <button type="submit">delete</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
