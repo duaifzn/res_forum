@@ -1,6 +1,7 @@
 const resController = require('../controllers/resController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
+const commentController = require('../controllers/commentController')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
@@ -57,6 +58,11 @@ module.exports = (app, passport) => {
   app.put('/admin/category/:id/edit', isAdmin, adminController.editCategory)
   //刪除餐廳類別
   app.delete('/admin/category/:id/delete', isAdmin, adminController.deleteCategory)
+
+  //新增評論
+  app.post('/comment', authenticate, commentController.createComment)
+  //刪除評論
+  app.delete('/comment/:id', isAdmin, commentController.deleteComment)
 
   //fb登入
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));

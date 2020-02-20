@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Restaurant.associate = function (models) {
     Restaurant.belongsTo(models.Category)
-    Restaurnat.hasMany(models.Comment)
+    Restaurant.hasMany(models.Comment)
     // associations can be defined here
   };
   return Restaurant;
