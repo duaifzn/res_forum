@@ -1,5 +1,7 @@
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 const bcrypt = require('bcryptjs')
 var imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -47,22 +49,19 @@ const userController = {
     return res.redirect('/signin')
   },
   userPage: (req, res) => {
-    User.findByPk(req.user.id)
+    User.findByPk(req.user.id, { include: [Comment, { model: Comment, include: [Restaurant] }] })
       .then(user => {
+        console.log(user)
         return res.render('userPage', JSON.parse(JSON.stringify({ user: user })))
       })
   },
   editUserPage: (req, res) => {
     User.findByPk(req.user.id)
       .then(user => {
-        //console.log(user)
         return res.render('user', JSON.parse(JSON.stringify({ user: user })))
       })
   },
   editUser: (req, res) => {
-    console.log('req.params:', req.params)
-    console.log('req.body:', req.body)
-    console.log('req.file:', req.file)
     const { file } = req
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
