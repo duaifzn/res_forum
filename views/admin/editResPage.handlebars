@@ -12,7 +12,7 @@
       <div class="form-group">
         <label for="selectCategory">category</label>
         <select class="custom-select" id="selectCategory" name="selectCategory">
-          <option selected>{{restaurant.Category.name}}</option>
+          <option value="{{restaurant.CategoryId}}" selected>{{restaurant.Category.name}}</option>
           {{#each categories}}
           <option value="{{this.id}}">{{this.name}}</option>
           {{/each}}

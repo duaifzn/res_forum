@@ -10,6 +10,7 @@ module.exports = {
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       isAdmin: true,
       name: "root",
+      avatar: faker.image.imageUrl(),
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -17,6 +18,7 @@ module.exports = {
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       isAdmin: false,
       name: "user1",
+      avatar: faker.image.imageUrl(),
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -24,6 +26,15 @@ module.exports = {
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       isAdmin: false,
       name: "user2",
+      avatar: faker.image.imageUrl(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      email: 'duaifzn@gmail.com',
+      password: bcrypt.hashSync('aaa', bcrypt.genSaltSync(10), null),
+      isAdmin: true,
+      name: "dabon",
+      avatar: faker.image.imageUrl(),
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});
@@ -34,7 +45,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     })
-    ), {})
+    ), {});
 
     return queryInterface.bulkInsert('Restaurants',
       Array.from({ length: 50 }).map(d =>

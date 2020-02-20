@@ -24,6 +24,7 @@ const adminController = {
       return res.redirect('admin/createResPage')
     }
     const { file } = req
+    console.log(file)
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
@@ -148,6 +149,7 @@ const adminController = {
     })
   },
   createCategory: (req, res) => {
+    //console.log(req.body)
     if (!req.body.newCategory) {
       req.flash("error_messages", "沒有輸入類別")
       return res.redirect('/admin/category')

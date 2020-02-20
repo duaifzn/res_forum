@@ -64,6 +64,14 @@ module.exports = (app, passport) => {
   //刪除評論
   app.delete('/comment/:id', isAdmin, commentController.deleteComment)
 
+  //編輯個人資料
+  app.put('/user/:id/edit', authenticate, upload.single('avatar'), userController.editUser)
+  //個人資料頁面
+  app.get('/user/:id', authenticate, userController.userPage)
+  //編輯個人資料頁面
+  app.get('/user/:id/edit', authenticate, userController.editUserPage)
+
+
   //fb登入
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
   app.get('/auth/facebook/callback',
