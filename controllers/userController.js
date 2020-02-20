@@ -51,8 +51,9 @@ const userController = {
   userPage: (req, res) => {
     User.findByPk(req.user.id, { include: [Comment, { model: Comment, include: [Restaurant] }] })
       .then(user => {
-        console.log(user)
-        return res.render('userPage', JSON.parse(JSON.stringify({ user: user })))
+        //console.log(user)
+        let commentNumber = user.Comments.length
+        return res.render('userPage', JSON.parse(JSON.stringify({ user: user, commentNumber: commentNumber })))
       })
   },
   editUserPage: (req, res) => {
