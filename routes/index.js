@@ -18,7 +18,13 @@ module.exports = (app, passport) => {
   }
   app.get('/', authenticate, (req, res) => { res.redirect('/restaurant') })
   app.get('/restaurant', authenticate, resController.getRes)
+
+  app.get('/restaurant/feeds', authenticate, resController.getFeeds)
+
   app.get('/restaurant/:id', authenticate, resController.getARes)
+  //餐廳熱門度頁面
+  app.get('/restaurant/:id/popular', authenticate, resController.getResPopular)
+
   app.get('/admin', isAdmin, (req, res) => { res.redirect('/admin/restaurant') })
   app.get('/admin/restaurant', isAdmin, adminController.adminGetRes)
   app.get('/signup', userController.signUpPage)

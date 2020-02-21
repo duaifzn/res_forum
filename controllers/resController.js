@@ -35,9 +35,39 @@ const resController = {
   },
   getARes: (req, res) => {
     Restaurant.findByPk(req.params.id, { include: [Category, { model: Comment, include: [User] }] }).then(restaurant => {
-      //console.log(restaurant)
-      return res.render('guestRestaurant', JSON.parse(JSON.stringify({ restaurant: restaurant })))
+      restaurant.update({
+        //點擊次數加一
+        clicks: restaurant.clicks + 1
+      }).then(restaurant => {
+        return res.render('guestRestaurant', JSON.parse(JSON.stringify({ restaurant: restaurant })))
+      })
+
     })
+  },
+  getFeeds: (req, res) => {
+    return Restaurant.findAll({
+      limit: 10,
+      order: [['createdAt', 'DESC']],
+      include: [Category]
+    }).then(restaurants => {
+      Comment.findAll({
+        limit: 10,
+        order: [['createdAt', 'DESC']],
+        include: [User, Restaurant]
+      }).then(comments => {
+        return res.render('feeds', JSON.parse(JSON.stringify({
+          restaurants: restaurants,
+          comments: comments
+        })))
+      })
+    })
+  },
+  getResPopular: (req, res) => {
+    Restaurant.findByPk(req.params.id, { include: [Comment] }).then(restaurant => {
+      const commentNumber = restaurant.Comments.length
+      res.render('getResPopular', JSON.parse(JSON.stringify({ restaurant: restaurant, commentNumber: commentNumber })))
+    })
+
   }
 }
 
