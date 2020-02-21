@@ -4,6 +4,7 @@ const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Favorite = db.Favorite
+const Like = db.Like
 const bcrypt = require('bcryptjs')
 var imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -101,7 +102,7 @@ const userController = {
       RestaurantId: req.params.id
     }).then(() => {
       //req.flash('success_messages', '加入成功')
-      return res.redirect('/restaurant')
+      return res.redirect('back')
     })
   },
   deleteFavorite: (req, res) => {
@@ -113,11 +114,32 @@ const userController = {
     }).then(favorite => {
       favorite.destroy()
         .then(() => {
-          return res.redirect('/restaurant')
+          return res.redirect('back')
         })
     })
   },
+  like: (req, res) => {
+    Like.create({
+      UserId: req.user.id,
+      RestaurantId: req.params.restaurantId
+    }).then(() => {
+      return res.redirect('back')
+    })
+  },
+  cancelLike: (req, res) => {
+    Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      }
+    }).then((like) => {
+      like.destroy()
+        .then(() => {
+          return res.redirect('back')
+        })
 
+    })
+  },
 
 }
 

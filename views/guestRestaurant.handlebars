@@ -16,10 +16,19 @@
       <a class="btn btn-primary" href="/restaurant/{{restaurant.id}}/popular">dashboard</a>
       {{#if isFavorited}}
       <form action="/user/{{restaurant.id}}/favorite?_method=DELETE" method="POST" style="display: inline;">
-        <button class="btn btn-primary">刪除最愛</button></form>
+        <button class="btn btn-danger">刪除最愛</button></form>
       {{else}}
       <form action="/user/{{restaurant.id}}/favorite" method="POST" style="display: inline;"><button
-          class="btn btn-danger">加到最愛</button>
+          class="btn btn-primary">加到最愛</button>
+      </form>
+      {{/if}}
+      {{#if this.isLike}}
+      <form action="/cancellike/{{restaurant.id}}?_method=DELETE" method="POST" style="display: inline;"><button
+          class="btn btn-danger">Cancel Like</button>
+      </form>
+      {{else}}
+      <form action="/like/{{restaurant.id}}" method="POST" style="display: inline;"><button
+          class="btn btn-primary">Like</button>
       </form>
       {{/if}}
     </div>

@@ -39,11 +39,20 @@
       </a>
       <div class="card-footer h-10">
         {{#if this.isFavorited}}
-        <form action="/user/{{this.id}}/favorite?_method=DELETE" method="POST"><button
+        <form action="/user/{{this.id}}/favorite?_method=DELETE" method="POST" style="display: inline;"><button
             class="btn btn-danger">刪除最愛</button>
         </form>
         {{else}}
-        <form action="/user/{{this.id}}/favorite" method="POST"><button class="btn btn-primary">加到最愛</button></form>
+        <form action="/user/{{this.id}}/favorite" method="POST" style="display: inline;"><button
+            class="btn btn-primary">加到最愛</button></form>
+        {{/if}}
+        {{#if this.isLike}}
+        <form action="/cancellike/{{this.id}}?_method=DELETE" method="POST" style="display: inline;"><button
+            class="btn btn-danger">Cancel Like</button>
+        </form>
+        {{else}}
+        <form action="/like/{{this.id}}" method="POST" style="display: inline;"><button
+            class="btn btn-primary">Like</button></form>
         {{/if}}
       </div>
     </div>

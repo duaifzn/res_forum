@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
 const Restaurant = db.Restaurant
+const Like = db.Like
 
 
 passport.use(new GoogleStrategy({
@@ -74,7 +75,12 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  User.findByPk(id, { include: [{ model: Restaurant, as: 'FavoritedRestaurants' }] }).then(user => {
+  User.findByPk(id, {
+    include: [
+      { model: Restaurant, as: 'FavoritedRestaurants' },
+      { model: Restaurant, as: 'LikeRestaurants' }
+    ]
+  }).then(user => {
     return done(null, user.get())
   });
 });

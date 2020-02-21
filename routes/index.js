@@ -82,6 +82,11 @@ module.exports = (app, passport) => {
   //刪除最愛
   app.delete('/user/:id/favorite', authenticate, userController.deleteFavorite)
 
+  //按讚
+  app.post('/like/:restaurantId', authenticate, userController.like)
+  //取消讚
+  app.delete('/cancellike/:restaurantId', authenticate, userController.cancelLike)
+
   //fb登入
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
   app.get('/auth/facebook/callback',

@@ -3,6 +3,7 @@ const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
 const User = db.User
+const Like = db.Like
 const resController = {
   getRes: (req, res) => {
     let wherequery = {}
@@ -25,7 +26,7 @@ const resController = {
       let prev = page - 1 < 0 ? 1 : page - 1
       let next = page + 1 > pages ? pages : page + 1
       //console.log('next:', next)
-      // console.log('req.user.FavoritedRestaurants: ', req.user.FavoritedRestaurants)
+      //console.log('req.user.LikeRestaurants: ', req.user.LikeRestaurants)
       // let aaa = req.user.FavoritedRestaurants.map(d => d.id)
       // console.log('req.user.FavoritedRestaurants: ', aaa)
       var data = result.rows.map(r => (
@@ -33,7 +34,8 @@ const resController = {
           ...r.dataValues,
           description: r.dataValues.description.substring(0, 50),
           //加入最愛判斷
-          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
+          isLike: req.user.LikeRestaurants.map(d => d.id).includes(r.id)
         }
       ))
       Category.findAll().then(categories => {
@@ -46,7 +48,9 @@ const resController = {
       include: [
         Category,
         { model: Comment, include: [User] },
-        { model: User, as: 'FavoritedUsers' }]
+        { model: User, as: 'FavoritedUsers' },
+        { model: User, as: 'LikeUsers' }
+      ]
     })
       .then(restaurant => {
         restaurant.update({
@@ -54,7 +58,8 @@ const resController = {
           clicks: restaurant.clicks + 1
         }).then(restaurant => {
           const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
-          return res.render('guestRestaurant', JSON.parse(JSON.stringify({ restaurant: restaurant, isFavorited: isFavorited })))
+          const isLike = restaurant.LikeUsers.map(d => d.id).includes(req.user.id)
+          return res.render('guestRestaurant', JSON.parse(JSON.stringify({ restaurant: restaurant, isFavorited: isFavorited, isLike: isLike })))
         })
 
       })
