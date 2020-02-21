@@ -3,6 +3,7 @@ const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Category = db.Category
+const Favorite = db.Favorite
 const bcrypt = require('bcryptjs')
 var imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -93,6 +94,28 @@ const userController = {
     }
 
 
+  },
+  addFavorite: (req, res) => {
+    Favorite.create({
+      UserId: req.user.id,
+      RestaurantId: req.params.id
+    }).then(() => {
+      //req.flash('success_messages', '加入成功')
+      return res.redirect('/restaurant')
+    })
+  },
+  deleteFavorite: (req, res) => {
+    Favorite.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.id
+      }
+    }).then(favorite => {
+      favorite.destroy()
+        .then(() => {
+          return res.redirect('/restaurant')
+        })
+    })
   },
 
 

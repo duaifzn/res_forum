@@ -9,9 +9,20 @@
         <li><strong>address:</strong>address:{{restaurant.address}}</li>
         <li><strong>business hours:</strong>business hours:{{restaurant.opening_hours}}</li>
       </ul>
-      <a class="btn btn-primary" href="/restaurant/{{restaurant.id}}/popular">dashboard</a>
     </div>
-    <div class="col-7">{{restaurant.description}}</div>
+    <div class="col-7">
+      {{restaurant.description}}<br>
+
+      <a class="btn btn-primary" href="/restaurant/{{restaurant.id}}/popular">dashboard</a>
+      {{#if isFavorited}}
+      <form action="/user/{{restaurant.id}}/favorite?_method=DELETE" method="POST" style="display: inline;">
+        <button class="btn btn-primary">刪除最愛</button></form>
+      {{else}}
+      <form action="/user/{{restaurant.id}}/favorite" method="POST" style="display: inline;"><button
+          class="btn btn-danger">加到最愛</button>
+      </form>
+      {{/if}}
+    </div>
   </div>
 
   <h3>所有評論：</h3>

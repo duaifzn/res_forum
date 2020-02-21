@@ -5,6 +5,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Restaurant = db.Restaurant
 
 
 passport.use(new GoogleStrategy({
@@ -73,7 +74,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  User.findByPk(id).then(user => {
+  User.findByPk(id, { include: [{ model: Restaurant, as: 'FavoritedRestaurants' }] }).then(user => {
     return done(null, user.get())
   });
 });

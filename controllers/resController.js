@@ -25,8 +25,16 @@ const resController = {
       let prev = page - 1 < 0 ? 1 : page - 1
       let next = page + 1 > pages ? pages : page + 1
       //console.log('next:', next)
+      // console.log('req.user.FavoritedRestaurants: ', req.user.FavoritedRestaurants)
+      // let aaa = req.user.FavoritedRestaurants.map(d => d.id)
+      // console.log('req.user.FavoritedRestaurants: ', aaa)
       var data = result.rows.map(r => (
-        { ...r.dataValues, description: r.dataValues.description.substring(0, 50) }
+        {
+          ...r.dataValues,
+          description: r.dataValues.description.substring(0, 50),
+          //加入最愛判斷
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
+        }
       ))
       Category.findAll().then(categories => {
         return res.render('resList', JSON.parse(JSON.stringify({ restaurants: data, categories: categories, categoryId: categoryId, totalPage: totalPage, prev: prev, next: next, page: page })))
@@ -34,15 +42,22 @@ const resController = {
     })
   },
   getARes: (req, res) => {
-    Restaurant.findByPk(req.params.id, { include: [Category, { model: Comment, include: [User] }] }).then(restaurant => {
-      restaurant.update({
-        //點擊次數加一
-        clicks: restaurant.clicks + 1
-      }).then(restaurant => {
-        return res.render('guestRestaurant', JSON.parse(JSON.stringify({ restaurant: restaurant })))
-      })
-
+    Restaurant.findByPk(req.params.id, {
+      include: [
+        Category,
+        { model: Comment, include: [User] },
+        { model: User, as: 'FavoritedUsers' }]
     })
+      .then(restaurant => {
+        restaurant.update({
+          //點擊次數加一
+          clicks: restaurant.clicks + 1
+        }).then(restaurant => {
+          const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+          return res.render('guestRestaurant', JSON.parse(JSON.stringify({ restaurant: restaurant, isFavorited: isFavorited })))
+        })
+
+      })
   },
   getFeeds: (req, res) => {
     return Restaurant.findAll({

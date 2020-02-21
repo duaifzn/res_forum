@@ -77,6 +77,10 @@ module.exports = (app, passport) => {
   //編輯個人資料頁面
   app.get('/user/:id/edit', authenticate, userController.editUserPage)
 
+  //加入最愛
+  app.post('/user/:id/favorite', authenticate, userController.addFavorite)
+  //刪除最愛
+  app.delete('/user/:id/favorite', authenticate, userController.deleteFavorite)
 
   //fb登入
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
