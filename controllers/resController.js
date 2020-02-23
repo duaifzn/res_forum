@@ -88,7 +88,27 @@ const resController = {
       res.render('getResPopular', JSON.parse(JSON.stringify({ restaurant: restaurant, commentNumber: commentNumber })))
     })
 
-  }
+  },
+  popularRes: (req, res) => {
+    Restaurant.findAll({
+      include: { model: User, as: 'FavoritedUsers' }
+    }).then(restaurants => {
+      //console.log('restaurants[0].FavoritedUsers.', restaurants[0].FavoritedUsers)
+      restaurants = restaurants.map(r => (
+        {
+          ...r.dataValues,
+          FavoriteNumber: r.FavoritedUsers.length,
+          description: r.dataValues.description.substring(0, 50),
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
+
+        }))
+      restaurants = restaurants.sort((a, b) => b.FavoriteNumber - a.FavoriteNumber).slice(1, 11)
+      //console.log('restaurants:', restaurants)
+      return res.render('popularRes', JSON.parse(JSON.stringify({ restaurants: restaurants })))
+    })
+
+
+  },
 }
 
 module.exports = resController

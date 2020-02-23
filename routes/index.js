@@ -20,6 +20,8 @@ module.exports = (app, passport) => {
   app.get('/restaurant', authenticate, resController.getRes)
 
   app.get('/restaurant/feeds', authenticate, resController.getFeeds)
+  //熱門餐廳頁面
+  app.get('/restaurant/top', authenticate, resController.popularRes)
 
   app.get('/restaurant/:id', authenticate, resController.getARes)
   //餐廳熱門度頁面
@@ -70,6 +72,12 @@ module.exports = (app, passport) => {
   //刪除評論
   app.delete('/comment/:id', isAdmin, commentController.deleteComment)
 
+  //追隨人頁面
+  app.get('/user/top', authenticate, userController.getTopUser)
+  //追隨
+  app.post('/following/:userId', authenticate, userController.follow)
+  //取消追隨
+  app.delete('/following/:userId', authenticate, userController.cancelFollow)
   //編輯個人資料
   app.put('/user/:id/edit', authenticate, upload.single('avatar'), userController.editUser)
   //個人資料頁面
@@ -77,10 +85,12 @@ module.exports = (app, passport) => {
   //編輯個人資料頁面
   app.get('/user/:id/edit', authenticate, userController.editUserPage)
 
+
   //加入最愛
   app.post('/user/:id/favorite', authenticate, userController.addFavorite)
   //刪除最愛
   app.delete('/user/:id/favorite', authenticate, userController.deleteFavorite)
+
 
   //按讚
   app.post('/like/:restaurantId', authenticate, userController.like)

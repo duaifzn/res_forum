@@ -5,6 +5,8 @@ const Restaurant = db.Restaurant
 const Category = db.Category
 const Favorite = db.Favorite
 const Like = db.Like
+const Followship = db.Followship
+const sequelize = require('sequelize')
 const bcrypt = require('bcryptjs')
 var imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -140,6 +142,44 @@ const userController = {
 
     })
   },
+  getTopUser: (req, res) => {
+    User.findAll({
+      include: [
+        { model: User, as: 'Followers' }
+      ]
+    }).then((users) => {
+      users = users.map((user) => ({
+        ...user.dataValues,
+        FollowerCount: user.Followers.length,
+        isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+      }))
+      users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+      return res.render('topUser', { users: users })
+    })
+  },
+  follow: (req, res) => {
+    Followship.create({
+      FollowerId: req.user.id,
+      FollowingId: req.params.userId
+    }).then(() => {
+      return res.redirect('back')
+    })
+  },
+  cancelFollow: (req, res) => {
+    Followship.findOne({
+      where: {
+        FollowerId: req.user.id,
+        FollowingId: req.params.userId
+      }
+    }).then((following) => {
+      following.destroy()
+        .then(() => {
+          return res.redirect('back')
+        })
+    })
+
+  },
+
 
 }
 
