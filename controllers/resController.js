@@ -29,7 +29,7 @@ const resController = {
       //console.log('req.user.LikeRestaurants: ', req.user.LikeRestaurants)
       // let aaa = req.user.FavoritedRestaurants.map(d => d.id)
       // console.log('req.user.FavoritedRestaurants: ', aaa)
-      var data = result.rows.map(r => (
+      let data = result.rows.map(r => (
         {
           ...r.dataValues,
           description: r.dataValues.description.substring(0, 50),

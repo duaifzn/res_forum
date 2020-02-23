@@ -54,11 +54,24 @@ const userController = {
     return res.redirect('/signin')
   },
   userPage: (req, res) => {
-    User.findByPk(req.user.id, { include: [Comment, { model: Comment, include: [Restaurant] }] })
+    User.findByPk(req.params.id, {
+      include: [
+        Comment,
+        { model: Comment, include: [Restaurant] }
+      ]
+    })
       .then(user => {
         //console.log(user)
         let commentNumber = user.Comments.length
-        return res.render('userPage', JSON.parse(JSON.stringify({ user: user, commentNumber: commentNumber })))
+        //console.log(req.user.FavoritedRestaurants)
+        console.log(req.user.Followings)
+        let FavoritedRestaurants = req.user.FavoritedRestaurants
+        let Followers = req.user.Followers
+        let Followings = req.user.Followings
+        let FavoritedResNumber = req.user.FavoritedRestaurants.length
+        let FollowerNumber = req.user.Followers.length
+        let FollowingNumber = req.user.Followings.length
+        return res.render('userPage', JSON.parse(JSON.stringify({ user: user, commentNumber: commentNumber, reqUser: req.user.id, FavoritedResNumber: FavoritedResNumber, FollowerNumber: FollowerNumber, FollowingNumber: FollowingNumber, FavoritedRestaurants: FavoritedRestaurants, Followers: Followers, Followings: Followings })))
       })
   },
   editUserPage: (req, res) => {
