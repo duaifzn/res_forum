@@ -11,6 +11,7 @@ const bcrypt = require('bcryptjs')
 var imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
+
 const userController = {
   signUpPage: (req, res) => {
     return res.render('signup')
