@@ -104,7 +104,7 @@ let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
       { model: db.Restaurant, as: 'FavoritedRestaurants' },
       { model: db.Restaurant, as: 'LikeRestaurants' },
       { model: User, as: 'Followers' },
-      { model: User, as: 'Followings' }
+      { model: User, as: 'Followings' },
     ]
   }).then(user => {
     if (!user) return next(null, false)

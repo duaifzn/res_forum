@@ -13,8 +13,8 @@ const adminController = {
     })
   },
   createResPage: (req, res) => {
-    Category.findAll().then(categories => {
-      res.render('admin/createResPage', JSON.parse(JSON.stringify({ categories: categories })))
+    adminService.createResPage(req, res, (data) => {
+      return res.render('admin/createResPage', JSON.parse(JSON.stringify(data)))
     })
   },
   createRes: (req, res) => {
@@ -29,28 +29,19 @@ const adminController = {
 
   },
   getRes: (req, res) => {
-    Restaurant.findByPk(req.params.id, { include: [Category] })
-      .then(restaurant => {
-        return res.render(`admin/restaurant`, JSON.parse(JSON.stringify({ restaurant: restaurant })))
-      })
+    adminService.getRes(req, res, (data) => {
+      return res.render(`admin/restaurant`, JSON.parse(JSON.stringify(data)))
+    })
   },
   deleteRes: (req, res) => {
-    Restaurant.findByPk(req.params.id)
-      .then(restaurant => {
-        restaurant.destroy()
-          .then(restaurant => {
-            return res.redirect('/admin/restaurant')
-          })
-
-      })
+    adminService.deleteRes(req, res, (data) => {
+      return res.redirect('back')
+    })
   },
   editResPage: (req, res) => {
-    Restaurant.findByPk(req.params.id, { include: [Category] })
-      .then(restaurant => {
-        Category.findAll().then(categories => {
-          return res.render('admin/editResPage', JSON.parse(JSON.stringify({ restaurant: restaurant, categories: categories })))
-        })
-      })
+    adminService.editResPage(req, res, (data) => {
+      return res.render('admin/editResPage', JSON.parse(JSON.stringify(data['message'])))
+    })
   },
   editRes: (req, res) => {
     adminService.editRes(req, res, (data) => {
@@ -60,24 +51,20 @@ const adminController = {
 
   },
   getUser: (req, res) => {
-    User.findAll().then(users => {
-      return res.render('admin/getUserPage', JSON.parse(JSON.stringify({ users: users })))
+    adminService.getUser(req, res, (data) => {
+      return res.render('admin/getUserPage', JSON.parse(JSON.stringify(data['message'])))
     })
   },
   putUser: (req, res) => {
-    User.findByPk(req.params.id).then(user => {
-      user.update({
-        isAdmin: !user.isAdmin
-      }).then(user => {
-        req.flash('success_messages', '權限變更成功')
-        return res.redirect('/admin/user')
-      })
+    adminService.putUser(req, res, (data) => {
+      req.flash('success_messages', '權限變更成功')
+      return res.redirect('back')
     })
   },
 
   getAllCategory: (req, res) => {
-    Category.findAll().then(categories => {
-      return res.render('admin/getAllCategory', JSON.parse(JSON.stringify({ categories: categories })))
+    adminService.getAllCategory(req, res, (data) => {
+      return res.render('admin/getAllCategory', JSON.parse(JSON.stringify(data['message'])))
     })
   },
   createCategory: (req, res) => {
@@ -92,14 +79,9 @@ const adminController = {
 
   },
   editCategoryPage: (req, res) => {
-    Category.findAll().then(categories => {
-      Category.findByPk(req.params.id)
-        .then(category => {
-          return res.render('admin/getAllCategory', JSON.parse(JSON.stringify({ categories: categories, category: category })))
-        })
+    adminService.editCategoryPage(req, res, (data) => {
+      return res.render('admin/getAllCategory', JSON.parse(JSON.stringify(data['message'])))
     })
-
-
   },
   editCategory: (req, res) => {
     adminService.editCategory(req, res, (data) => {

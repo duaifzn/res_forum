@@ -17,6 +17,11 @@ const adminService = {
         callback({ restaurant: restaurant })
       })
   },
+  createResPage: (req, res, callback) => {
+    Category.findAll().then(categories => {
+      callback({ categories: categories })
+    })
+  },
   getAllCategory: (req, res, callback) => {
     Category.findAll().then(categories => {
       callback({ categories: categories })
@@ -71,6 +76,14 @@ const adminService = {
 
 
 
+  },
+  editResPage: (req, res, callback) => {
+    Restaurant.findByPk(req.params.id, { include: [Category] })
+      .then(restaurant => {
+        Category.findAll().then(categories => {
+          callback({ status: 'success', message: { restaurant: restaurant, categories: categories } })
+        })
+      })
   },
   editRes: (req, res, callback) => {
     const { file } = req
@@ -145,5 +158,33 @@ const adminService = {
 
       })
   },
+  getUser: (req, res, callback) => {
+    User.findAll().then(users => {
+      callback({ status: 'success', message: { users: users } })
+    })
+  },
+  putUser: (req, res, callback) => {
+    User.findByPk(req.params.id).then(user => {
+      user.update({
+        isAdmin: !user.isAdmin
+      }).then(user => {
+        callback({ status: 'success', message: '權限變更成功' })
+      })
+    })
+  },
+  getAllCategory: (req, res, callback) => {
+    Category.findAll().then(categories => {
+      callback({ status: 'success', message: { categories: categories } })
+    })
+  },
+  editCategoryPage: (req, res, callback) => {
+    Category.findAll().then(categories => {
+      Category.findByPk(req.params.id)
+        .then(category => {
+          callback({ status: 'success', message: { categories: categories, category: category } })
+        })
+    })
+  },
 }
+
 module.exports = adminService
